@@ -1,0 +1,98 @@
+虚拟DOM中的Dif算法
+比较原始虚拟DOM和新的虚拟DOM就是Diff算法
+只比对一层DOM,同层比对
+React中的声明周期函数
+##生命周期函数:在某一个时刻会自动执行的函数
+1)	componentWillMount()—在render之前执行
+在组件即将被挂载到页面的时候自动执行
+2)	componentDidMount()
+在组件挂在到页面之后自动执行
+挂载:第一次显示页面
+3)	shouldComponentUpdate—要求boolean返回值
+组件被更新前自动执行
+4)	ComponentUpdate
+组件被更新之前,shouldComponentUpdate返回true才执行
+5)	componentDidUpdate
+组件更新完成之后
+6)	componentWillReceiveProps
+ 	[1]当一个组件从父组件接收参数
+		[2]只要父组件的render函数被重新执行,子组件的声明周期函数就会被执行
+***第一次存在于父组件中是不会被执行的
+7)	componentWillUnmount
+当组件即将被从页面剔除 的时候执行
+所有的生命周期函数都可以没有,render一定要有
+**发ajax请求一般会在ComponentDidMount()最好 不能放在render里面,会造成死循环  npm install axios
+
+<Fragment> 占位符 import { Fragment }  from ‘react’
+React 使用css动画效果
+@keyframes hide-item{
+}
+在css3里面
+animation:hide-item 2s ease-in forwards;
+forwards:保留保留最后一帧动画效果
+react-transition-grop
+Redux工作流程
+
+React-UI框架
+网址:https://ant.design/index-cn
+npm install antd –save
+import ‘antd/dist/antd.css’
+import {Input,Button,List} from ‘antd’
+创建数据管理工具store
+1)	npm install redux –save
+2)	import {createStore} from ‘redux’
+3)	创建reducer.js
+export default (state,action) =>{
+		return state;
+}
+4)	import reducer from ‘./reducer’
+5)	const store=createStore(reducer);
+6)	组件里面this.state=store.getState()
+**reducer里面可以接收state,但绝不能修改state
+改变store里的数据
+1)	创建一个action对象,必须有一个type字段
+2)	把action发给store
+Store.dispatch(action);
+3)	store不知道怎么处理,于是把action和prevState传给reducer
+4)	在reducer里面因为不能改变之前的数据,所以要复制一份数据
+const newState=JSON.parse(JSON.stringify(state));
+复习深拷贝的知识:
+var a ={
+			name:”hello”
+};
+var str=JSON.stringify(a);
+var b=JSON.parse(str);
+b.name= ‘hi’;
+alert(a.name);  =>>结果是hello
+也就是深拷贝不影响原来的值,先字符串转一次JSON,再转回string即可
+5)	订阅store变化 store.subscribe(this.handlestoreChange);
+6)	更新state变更页面
+(重新取一次然后覆盖原来的state)
+This.setState(store.getState());
+注意:
+写代码的时候的错误
+1)	Input框绑定事件
+onChange={this.InputValueChange}
+规定this的指向
+this.InputValueChange= this.InputValueChange
+.bind(this);
+2)	store传给reducer的时候
+获得输入框的值e.target.value
+
+要想连接redux调试,要加参数
+createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+)
+<List>里面接收的参数不能换顺序
+renderItem{(item,index)}
+可以用ActionType拆分type写成常量形式
+使用actionCreator统一创建action
+Redux的三个原则
+1)	store是唯一的
+2)	只有store可以改变自己的内容
+store拿到reducer后自己更新
+reducer是不能改变数据的
+3)reducer必须是一个纯函数
+纯函数:
+给定固定的输入,就一定会有固定的输出,而且不会有任何的副作用(不能修改state)
+
+
